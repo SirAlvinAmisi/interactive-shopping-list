@@ -1,4 +1,4 @@
-Here’s the README file for the **Interactive Shopping List** project formatted like the provided example:  
+Here’s the README file for the **Interactive Shopping List** 
 
 ---
 

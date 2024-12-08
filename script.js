@@ -31,17 +31,31 @@ function addItem() {
 }
 
 /**
- * Toggle the purchased status or enable editing.
- * - Single click toggles the purchased state.
- * - Double click enables editing of the item.
+ * Create a new list item element.
+ * - Adds buttons for editing and purchasing
+ * @param {string} text - The text for the new list item.
+ * @returns {HTMLElement} - The new list item element.
  */
-function togglePurchased(event) {
-    if (event.detail === 2) { // Detect double-click for editing
-        editItem(event.target);
-    } else { // Single-click toggles purchased state
-        event.target.classList.toggle('purchased');
+function createListItem(text) {
+    // Clone the template
+    const template = document.getElementById('listItemTemplate');
+    const listItem = template.content.cloneNode(true).querySelector('.list-item');
+    
+    // Set the item text
+    const textSpan = listItem.querySelector('.item-text');
+    textSpan.textContent = text;
+    
+    // Add event listeners to buttons
+    const editBtn = listItem.querySelector('.edit-btn');
+    const purchaseBtn = listItem.querySelector('.purchase-btn');
+    
+    editBtn.addEventListener('click', () => editItem(textSpan));
+    purchaseBtn.addEventListener('click', () => {
+        listItem.classList.toggle('purchased');
         saveToLocalStorage();
-    }
+    });
+    
+    return listItem;
 }
 
 /**
@@ -49,23 +63,21 @@ function togglePurchased(event) {
  * - Replaces the item's text with an input field.
  * - Saves changes on blur (when input loses focus).
  */
-function editItem(item) {
-    const currentText = item.textContent; // Get current item text
-    const input = document.createElement('input'); // Create an input field
+function editItem(textSpan) {
+    const currentText = textSpan.textContent;
+    const input = document.createElement('input');
     input.type = 'text';
-    input.value = currentText; // Populate input with current text
-    item.textContent = ''; // Clear current item text
-    item.appendChild(input); // Add input to the item
+    input.value = currentText;
+    textSpan.textContent = '';
+    textSpan.appendChild(input);
 
-    // Save changes when input loses focus
     input.addEventListener('blur', () => {
-        const newText = input.value.trim(); // Get the new text
-        item.textContent = newText || currentText; // Update text (revert if empty)
-        item.addEventListener('click', togglePurchased); // Reattach the toggle listener
-        saveToLocalStorage(); // Update local storage
+        const newText = input.value.trim();
+        textSpan.textContent = newText || currentText;
+        saveToLocalStorage();
     });
 
-    input.focus(); // Focus the input for editing
+    input.focus();
 }
 
 /**
@@ -79,31 +91,18 @@ function clearList() {
 }
 
 /**
- * Create a new list item element.
- * - Adds event listeners for toggling and editing.
- * @param {string} text - The text for the new list item.
- * @returns {HTMLElement} - The new list item element.
- */
-function createListItem(text) {
-    const listItem = document.createElement('li'); // Create a list item
-    listItem.textContent = text; // Set the item's text
-    listItem.addEventListener('click', togglePurchased); // Attach toggle listener
-    return listItem;
-}
-
-/**
  * Save the current shopping list to local storage.
  * - Serializes the list as an array of objects (text and purchased state).
  */
 function saveToLocalStorage() {
-    const items = []; // Initialize an array to hold items
-    shoppingList.querySelectorAll('li').forEach((item) => {
+    const items = [];
+    shoppingList.querySelectorAll('.list-item').forEach((item) => {
         items.push({
-            text: item.textContent, // Item text
-            purchased: item.classList.contains('purchased'), // Purchased status
+            text: item.querySelector('.item-text').textContent,
+            purchased: item.classList.contains('purchased'),
         });
     });
-    localStorage.setItem('shoppingList', JSON.stringify(items)); // Save to local storage
+    localStorage.setItem('shoppingList', JSON.stringify(items));
 }
 
 /**

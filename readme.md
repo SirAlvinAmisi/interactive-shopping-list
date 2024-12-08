@@ -1,4 +1,4 @@
-Here’s the README file for the **Interactive Shopping List** 
+**Interactive Shopping List** 
 
 ---
 

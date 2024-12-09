@@ -1,5 +1,6 @@
 // DOM Elements
-const addItemButton = document.getElementById('addItemButton'); // Button to add new items
+const addItemButton = document.getElementById('addItemButton');
+// Button to add new items
 const clearListButton = document.getElementById('clearListButton'); // Button to clear the list
 const itemInput = document.getElementById('itemInput'); // Input field for new items
 const shoppingList = document.getElementById('shoppingList'); // Container for the shopping list items

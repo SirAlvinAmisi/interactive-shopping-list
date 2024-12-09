@@ -6,6 +6,7 @@
 
 This repository contains the solution to the **Interactive Shopping List** assignment, combining JavaScript fundamentals such as array iteration, DOM manipulation, and event handling. The project allows users to manage a shopping list dynamically.  
 
+the live link to the assignment is https://siralvinamisi.github.io/interactive-shopping-list/
 ---  
 
 ## Table of Contents  
